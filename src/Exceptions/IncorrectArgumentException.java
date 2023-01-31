@@ -1,5 +1,7 @@
 package Exceptions;
 
-public class IncorrectArgumentException {
-
+public class IncorrectArgumentException extends Throwable{
+    public IncorrectArgumentException(String message) {
+        super(message);
+    }
 }

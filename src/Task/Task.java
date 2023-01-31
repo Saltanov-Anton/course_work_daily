@@ -4,28 +4,42 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Task {
+public abstract class Task {
     private static int idGenerator;
-    private String title;
-    private Type type;
     private int id;
+    private Type type;
     private LocalDateTime dateTime;
+    private String title;
     private String description;
 
+    public Task(String title, Type type, LocalDateTime dateTime, String description) {
+        this.title = title;
+        this.type = type;
+        this.id = ++idGenerator;
+        this.dateTime = dateTime;
+        this.description = description;
+    }
+
     public boolean appearsIn(LocalDate localDate) {
+        if (localDate.equals(this.getDateTime().toLocalDate())) {
+            return true;
+        } else if (localDate.isAfter(this.getDateTime().toLocalDate())) {
+            this.changeDate(localDate);
+            this.appearsIn(localDate);
+        } else if (localDate.isBefore(this.getDateTime().toLocalDate())) {
+            return false;
+        }
         return false;
     }
 
+    public abstract void changeDate(LocalDate localDate);
+
     public int getId() {
-        return 1;
+        return id;
     }
 
     public Type getType() {
         return type;
-    }
-
-    public void setTitle() {
-
     }
 
     public String getTitle() {
@@ -38,10 +52,6 @@ public class Task {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -65,11 +75,24 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(title, task.title) && type == task.type && Objects.equals(dateTime, task.dateTime) && Objects.equals(description, task.description);
+        return id == task.id && Objects.equals(title, task.title)
+                && type == task.type && Objects.equals(dateTime, task.dateTime)
+                && Objects.equals(description, task.description);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(title, type, id, dateTime, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", type=" + type +
+                ", dateTime=" + dateTime +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
