@@ -20,19 +20,7 @@ public abstract class Task {
         this.description = description;
     }
 
-    public boolean appearsIn(LocalDate localDate) {
-        if (localDate.equals(this.getDateTime().toLocalDate())) {
-            return true;
-        } else if (localDate.isAfter(this.getDateTime().toLocalDate())) {
-            this.changeDate(localDate);
-            this.appearsIn(localDate);
-        } else if (localDate.isBefore(this.getDateTime().toLocalDate())) {
-            return false;
-        }
-        return false;
-    }
-
-    public abstract void changeDate(LocalDate localDate);
+    public abstract boolean appearsIn(LocalDate localDate);
 
     public int getId() {
         return id;

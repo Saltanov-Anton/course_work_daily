@@ -9,9 +9,9 @@ public class MonthlyTask extends Task {
         super(title, type, dateTime, description);
     }
 
-    public void changeDate(LocalDate localDate) {
-        while (localDate.isAfter(this.getDateTime().toLocalDate())) {
-            this.setDateTime(this.getDateTime().plusMonths(1));
-        }
+    @Override
+    public boolean appearsIn(LocalDate date) {
+        return (date.isAfter(getDateTime().toLocalDate()) || date.isEqual(getDateTime().toLocalDate()))
+                && (date.getDayOfMonth() == getDateTime().getDayOfMonth());
     }
 }
